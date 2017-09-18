@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dip" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/beep_hz"
+                android:textSize="20dip" />
+
+            <EditText
+                android:id="@+id/edit_hz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLength="9"
+                android:layout_weight="1"
+                android:numeric="integer" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:padding="10dip" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/keep_ms"
+                android:textSize="20dip" />
+
+            <EditText
+                android:id="@+id/edit_ms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLength="5"
+                android:numeric="integer" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
