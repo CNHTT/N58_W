@@ -1,5 +1,6 @@
 package com.szfp.n58;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.TabActivity;
@@ -10,11 +11,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -30,7 +34,6 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.newpos.app.AppContext;
 import com.newpos.app.cmd.Instruction.Code;
 import com.newpos.mpos.iInterface.ICommunication;
 import com.newpos.mpos.iInterface.IDevice;
@@ -55,6 +58,7 @@ public class MainActivity extends TabActivity implements TabHost.OnTabChangeList
     private String ip;
     private String port;
     private SharedPreferences settings;
+
 
 
 
@@ -127,6 +131,7 @@ public class MainActivity extends TabActivity implements TabHost.OnTabChangeList
      */
     private TabWidget mTabWidget;
 
+    private int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1;
     /**
      * 用来保存菜单中子view的容器
      */
@@ -169,14 +174,52 @@ public class MainActivity extends TabActivity implements TabHost.OnTabChangeList
 
         settings = getSharedPreferences("setting", MODE_PRIVATE);
         settingDialog = new SettingDialog(this, R.style.MyDialogStyle);
-        ip = settings.getString("ip", "192.168.2.138");
-        port = settings.getString("port", "9981");
-        AppContext.getAppContext().setIp(ip);
-        AppContext.getAppContext().setPort(port);
+        ip = settings.getString("ip", "192.168.1.118");
+        port = settings.getString("port", "8080");
+        App.setIp(ip);
+        App.setPort(port);
 
         // 初始化页面
         setupViews();
+        isOK();
     }
+    public void isOK(){
+        int osVersion = Integer.valueOf(android.os.Build.VERSION.SDK);
+        if (osVersion>22){
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                //申请WRITE_EXTERNAL_STORAGE权限
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE,Manifest.permission.ACCESS_COARSE_LOCATION},
+                        WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
+            }else{
+            }
+        }else{
+            //如果SDK小于6.0则不去动态申请权限
+        }
+//        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_PHONE_STATE)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            //申请WRITE_EXTERNAL_STORAGE权限
+//            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE},
+//                    WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
+//        }else{
+//            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE},
+//                    WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
+//        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE) {
+
+            Toast.makeText(getApplicationContext(),"success",Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getApplicationContext(),"error",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
     private void registerHeadsetPlugReceiver(HeadsetPlugReceiver headsetPlugReceiver) {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(HEADSET_PLUG);
@@ -418,8 +461,8 @@ public class MainActivity extends TabActivity implements TabHost.OnTabChangeList
                     editor.putString("ip", ip);
                     editor.putString("port", port);
                     editor.commit();
-                    AppContext.getAppContext().setIp(ip);
-                    AppContext.getAppContext().setPort(port);
+                    App.setIp(ip);
+                    App.setPort(port);
                     Toast.makeText(MainActivity.this, getString(R.string.setting_success),
                             Toast.LENGTH_LONG).show();
                     this.dismiss();

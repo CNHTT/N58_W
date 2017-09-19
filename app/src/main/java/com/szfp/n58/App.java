@@ -29,6 +29,8 @@ import okhttp3.OkHttpClient;
 
 public class App extends Application {
 
+    public static String ip;
+    public static String port;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -120,6 +122,9 @@ public class App extends Application {
         }
     }
 
+
+
+
     /**
      * 这里只是我谁便写的认证规则，具体每个业务是否需要验证，以及验证规则是什么，请与服务端或者leader确定
      * 这里只是我谁便写的认证规则，具体每个业务是否需要验证，以及验证规则是什么，请与服务端或者leader确定
@@ -133,5 +138,21 @@ public class App extends Application {
             //return hostname.equals("server.jeasonlzy.com");
             return true;
         }
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public static void setIp(String i) {
+        ip = i;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public static void setPort(String p) {
+        port = p;
     }
 }

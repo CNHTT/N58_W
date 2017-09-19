@@ -19,19 +19,19 @@ import java.util.Map;
  */
 
 public class TransactionData {
-    // 卡号
+    // 卡号-
     private final static int cardIdTag = 0x5A;
-    // 金额
+    // 金额-
     private final static int amountTag = 0x9F02;
     // 货币代码
     private final static int currencyTag = 0x5F2A;
-    // 商户号
+    // 商户号-
     private final static int merchantTag = 0x9F16;
-    // 终端号
+    // 终端号-
     private final static int terIdTag = 0x9F1C;
     // 批次号
     private final static int batchIdTag = 0xFFF1;
-    // 流水号
+    // 流水号-
     private final static int serialNoTag = 0x9F41;
     // 日期
     private final static int dateTag = 0x9A;
@@ -186,7 +186,7 @@ public class TransactionData {
                 amountStr = amountStr.substring(0, amountStr.indexOf(".") + 3);
             }
             sb.append(String.format(cxt.getString(R.string.amount_), amountStr)).append("\n");
-            data.amount =String.format(cxt.getString(R.string.amount_), amountStr);
+            data.amount =amountStr;
         }
         if (!"".equals(currency)) {
             sb.append(cxt.getString(R.string.currency)).append(currency).append("\n");
@@ -210,11 +210,11 @@ public class TransactionData {
         }
         if (!"".equals(date)) {
             sb.append(cxt.getString(R.string.date)).append(fillWord(date, "/")).append("\n");
-            data.date =date;
+            data.date =fillWord(date, "/");
         }
         if (!"".equals(time)) {
             sb.append(cxt.getString(R.string.time)).append(fillWord(time, ":")).append("\n");
-            data.time =time;
+            data.time =fillWord(time, ":");
         }
         if (!"".equals(authCode)) {
             sb.append(cxt.getString(R.string.authCode)).append(authCode).append("\n");

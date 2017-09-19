@@ -77,12 +77,12 @@
     <string name="amount">amount(￥):</string>
 
     <string name="cardId">cardId:</string>
-    <string name="amount_">amount: %1$s KES</string>
+    <string name="amount_">amount: %1$s RMB</string>
     <string name="currency">currency:</string>
     <string name="merchantId">merchantId:</string>
     <string name="terminalId">terminalId:</string>
     <string name="batchId">batchId:</string>
-    <string name="serialNo">serialNo:</string>
+    <string name="serialNo">Transaction ID:</string>
     <string name="date">date:</string>
     <string name="time">time:</string>
     <string name="authCode">auth code:</string>

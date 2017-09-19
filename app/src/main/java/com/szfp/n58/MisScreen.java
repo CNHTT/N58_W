@@ -47,10 +47,8 @@ import com.szfp.n58.callback.DialogCallback;
 import com.szfp.n58.config.AppConfig;
 import com.szfp.n58.data.TransactionData;
 import com.szfp.n58.entity.BlueDevice;
-import com.szfp.n58.entity.FResponse;
 import com.szfp.n58.entity.LabelInfo;
 import com.szfp.n58.entity.ReturnData;
-import com.szfp.n58.utils.Convert;
 import com.szfp.n58.utils.ToastUtils;
 import com.szfp.n58.utils.WidgetUtils;
 import com.szfp.n58.widget.DeviceDialog;
@@ -65,7 +63,7 @@ import okhttp3.Call;
 
 public class MisScreen extends BaseActivity {
     private static final String TAG = MisScreen.class.getSimpleName();
-    private static final String URL ="https://www.baidu.com" ;
+    private static final String URL ="http://"+App.ip+":"+App.port+"/n58/postTran.mp" ;
 
     private ListView mListView;
     private List<LabelInfo> labelInfos = new ArrayList<LabelInfo>();
@@ -758,39 +756,35 @@ public class MisScreen extends BaseActivity {
      * @param data
      */
     private void postData(ReturnData data) {
-        OkGo.<FResponse<String>>get(URL)
+        OkGo.<String>post(URL)
                 .tag(this)
                 .params("data",new Gson().toJson(data))
-                .execute(new DialogCallback<FResponse<String>>(mContext) {
+                .execute(new DialogCallback<String>(mContext) {
                     @Override
-                    public void onSuccess(Response<FResponse<String>> response) {
+                    public void onSuccess(Response<String> response) {
                         handleResponse(response);
                     }
 
                     @Override
-                    public void onError(Response<FResponse<String>> response) {
+                    public void onError(Response<String> response) {
                         handleError(response);
                     }
                 });
 
     }
 
-    private <T> void handleError(Response<FResponse<String>> response) {
+    private  void handleError(Response<String> response) {
         Toast.makeText(this,"error",Toast.LENGTH_SHORT).show();
     }
 
-    private  <T> void handleResponse(Response<T> response) {
+    private  void handleResponse(Response<String> response) {
         StringBuilder sb;
         Call call = response.getRawCall();
-        T body = response.body();
+        String body = response.body();
         if (body == null) {
             Toast.makeText(this,"The return data is empty",Toast.LENGTH_SHORT).show();
         } else {
-            if (body instanceof String) {
                 Toast.makeText(this, body.toString(),Toast.LENGTH_SHORT).show();
-            }  else {
-                Toast.makeText(this, (Convert.formatJson(body)),Toast.LENGTH_SHORT).show();
-            }
         }
     }
 
