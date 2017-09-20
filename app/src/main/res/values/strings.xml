@@ -69,15 +69,22 @@
     <string name="responding_test">Responding Test</string>
     <string name="query_balance">Query Balance</string>
 
+    <string name="input_please">Please enter the</string>
+    <string name="message">MESSAGE</string>
+    <string name="announcement">ANNOUNCEMENT</string>
+    <string name="affirm">AFFIRM</string>
+
     <string name="consume">Consume</string>
     <string name="tips_amount">input amount</string>
     <string name="repeal">Repeal</string>
     <string name="tips_repeal">please input serial number</string>
     <string name="tips_flow">serial number</string>
-    <string name="amount">amount(￥):</string>
-
+    <string name="amount">amount($):</string>
+    <string name="confirm">Yes</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_clear">Clear</string>
     <string name="cardId">cardId:</string>
-    <string name="amount_">amount: %1$s RMB</string>
+    <string name="amount_">amount: %1$s USD</string>
     <string name="currency">currency:</string>
     <string name="merchantId">merchantId:</string>
     <string name="terminalId">terminalId:</string>
@@ -118,9 +125,6 @@
     <string name="invalid_ip">invalid IP Address！</string>
     <string name="invalid_port">invalid IP Port！</string>
     <string name="setting_success">IP/PORT！</string>
-
-
-
 
 
     <string name="scanning">scanning for devices...</string>

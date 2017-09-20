@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.widget.Toast;
 
 import com.szfp.n58.R;
+import com.szfp.n58.callback.OnShowPrintCallBack;
 
 /**
  * author：ct on 2017/9/18 10:52
@@ -60,12 +61,12 @@ public class WidgetUtils {
                         }).show();
     } /**
      * 弹出对话框
-     *
-     * @param cxt
+     *  @param cxt
      * @param title 弹出框标题
      * @param message 弹出信息
+     * @param onShowPrintCallBack
      */
-    public static void showResultPrint(Context cxt, final String title, final String message) {
+    public static void showResultPrint(Context cxt, final String title, final String message, final OnShowPrintCallBack onShowPrintCallBack) {
         new AlertDialog.Builder(cxt)
                 .setTitle(title)
                 .setMessage(message)
@@ -77,10 +78,10 @@ public class WidgetUtils {
                                 dialog.dismiss();
                             }
                         })
-                .setNegativeButton("print", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Sign and print", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        PrintUtils.printData(title,message);
+                        onShowPrintCallBack.success(title,message);
                     }
                 }).show();
     }

@@ -189,7 +189,7 @@ public class TransactionData {
             data.amount =amountStr;
         }
         if (!"".equals(currency)) {
-            sb.append(cxt.getString(R.string.currency)).append(currency).append("\n");
+            sb.append(cxt.getString(R.string.currency)).append("4217").append("\n");
             data.currency =currency;
         }
         if (!"".equals(merchantId)) {

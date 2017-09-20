@@ -6,7 +6,9 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.telephony.CellLocation;
@@ -44,15 +46,22 @@ import com.newpos.mpos.tools.BaseUtility;
 import com.newpos.mpos.tools.BaseUtils;
 import com.szfp.n58.adapter.TitleAdapter;
 import com.szfp.n58.callback.DialogCallback;
+import com.szfp.n58.callback.OnShowPrintCallBack;
 import com.szfp.n58.config.AppConfig;
 import com.szfp.n58.data.TransactionData;
 import com.szfp.n58.entity.BlueDevice;
 import com.szfp.n58.entity.LabelInfo;
 import com.szfp.n58.entity.ReturnData;
+import com.szfp.n58.utils.ContextUtils;
+import com.szfp.n58.utils.PrintUtils;
 import com.szfp.n58.utils.ToastUtils;
 import com.szfp.n58.utils.WidgetUtils;
 import com.szfp.n58.widget.DeviceDialog;
+import com.szfp.n58.widget.dialog.BaseDialog;
+import com.szfp.n58.widget.sign.LinePathView;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +72,7 @@ import okhttp3.Call;
 
 public class MisScreen extends BaseActivity {
     private static final String TAG = MisScreen.class.getSimpleName();
-    private static final String URL ="http://"+App.ip+":"+App.port+"/n58/postTran.mp" ;
+    private static final String URL ="http://"+App.ip+":"+App.port+"/N58/postTran.mp" ;
 
     private ListView mListView;
     private List<LabelInfo> labelInfos = new ArrayList<LabelInfo>();
@@ -717,7 +726,13 @@ public class MisScreen extends BaseActivity {
                         WidgetUtils.showResultPrint(
                                 cxt,
                                 getString(R.string.consume),
-                                getString(R.string.success) + "\n"+ data.getStr());
+                                getString(R.string.success) + "\n"+ data.getStr(), new OnShowPrintCallBack() {
+                                    @Override
+                                    public void success(String title, String message) {
+                                        showSign(title,message);
+
+                                    }
+                                });
 
 
                         postData(data);
@@ -735,7 +750,14 @@ public class MisScreen extends BaseActivity {
                                 cxt,
                                 getString(R.string.repeal),
                                 getString(R.string.success) + "\n"
-                                        + data.getStr());
+                                        + data.getStr(), new OnShowPrintCallBack() {
+                                    @Override
+                                    public void success(String title, String message) {
+                                        showSign(title,message);
+
+                                    }
+                                });
+
                         postData(data);
                         break;
 
@@ -750,6 +772,67 @@ public class MisScreen extends BaseActivity {
         }
 
     };
+
+    /**
+     * 签名
+     */
+
+    public static String path= Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "qm.png";
+    BaseDialog signDialog;
+    private LinePathView linePathView;
+    private Button btSignClear;
+    private Button btSignSave;
+    private Button btSignBlack;
+    private Bitmap signBitmap;
+    private void showSign(final String title, final String message) {
+        if (signDialog==null)
+        {
+            View view = ContextUtils.inflate(this,R.layout.dialog_sign);
+            linePathView = (LinePathView) view.findViewById(R.id.signView);
+            btSignClear = (Button) view.findViewById(R.id.bt_sign_clear);
+            btSignSave = (Button) view.findViewById(R.id.bt_sign_save);
+            btSignBlack = (Button) view.findViewById(R.id.bt_sign_black);
+            signDialog = new BaseDialog(mContext,R.style.AlertDialogStyle);
+            linePathView.setPaintWidth(10);
+            signDialog.setCancelable(false);
+            signDialog.setContentView(view);
+            btSignBlack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    linePathView.clear();
+                    signDialog.cancel();
+                }
+            });
+            btSignClear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    linePathView.clear();
+                }
+            });
+            btSignSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (linePathView.getTouched()){
+                        try {
+                            linePathView.save("/sdcard/qm.png", true, 10);
+                        } catch (IOException e) {
+                            ToastUtils.error("You have no signature~~~~");
+                            e.printStackTrace();
+                        }
+
+                        PrintUtils.printData(message, title,path);
+                        signDialog.cancel();
+
+                    }else {
+                        ToastUtils.error("You have no signature~~~~");
+                    }
+                }
+            });
+        }
+        linePathView.clear();
+        signDialog.show();
+
+    }
 
     /**
      * 提交数据到服务器

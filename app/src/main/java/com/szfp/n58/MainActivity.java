@@ -174,8 +174,8 @@ public class MainActivity extends TabActivity implements TabHost.OnTabChangeList
 
         settings = getSharedPreferences("setting", MODE_PRIVATE);
         settingDialog = new SettingDialog(this, R.style.MyDialogStyle);
-        ip = settings.getString("ip", "192.168.1.118");
-        port = settings.getString("port", "8080");
+        ip = settings.getString("ip", "39.108.61.105");
+        port = settings.getString("port", "80");
         App.setIp(ip);
         App.setPort(port);
 
@@ -189,7 +189,9 @@ public class MainActivity extends TabActivity implements TabHost.OnTabChangeList
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
                 //申请WRITE_EXTERNAL_STORAGE权限
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE,Manifest.permission.ACCESS_COARSE_LOCATION},
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE,Manifest.permission.ACCESS_COARSE_LOCATION,
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
             }else{
             }
