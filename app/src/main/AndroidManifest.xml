@@ -29,16 +29,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:configChanges="mcc|mnc|orientation|screenSize|keyboard|layoutDirection"
+            android:windowSoftInputMode="stateHidden|stateUnchanged">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MisScreen" />
-        <activity android:name=".SystemScreen" />
-        <activity android:name=".DeviceListActivity" />
+        <activity android:name=".MisScreen"
+            android:configChanges="mcc|mnc|orientation|screenSize|keyboard|layoutDirection"
+            android:windowSoftInputMode="stateHidden|stateUnchanged"/>
+        <activity android:name=".SystemScreen"
+            android:configChanges="mcc|mnc|orientation|screenSize|keyboard|layoutDirection"
+            android:windowSoftInputMode="stateHidden|stateUnchanged"/>
+        <activity android:name=".DeviceListActivity"
+            android:configChanges="mcc|mnc|orientation|screenSize|keyboard|layoutDirection"
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity android:name=".Main2Activity"></activity>
     </application>
 

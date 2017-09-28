@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 
 import java.io.File;
@@ -69,6 +70,7 @@ public class PrintPic {
     public void drawImage(float x, float y, String path) {
         try {
             Bitmap e = BitmapFactory.decodeFile(path);
+            e=scaleBitmap(e, 0.4f);
             this.canvas.drawBitmap(e, x, y, (Paint)null);
             if(this.length < y + (float)e.getHeight()) {
                 this.length = y + (float)e.getHeight();
@@ -77,6 +79,23 @@ public class PrintPic {
             var5.printStackTrace();
         }
 
+    }
+
+
+    private Bitmap scaleBitmap(Bitmap origin, float ratio) {
+        if (origin == null) {
+            return null;
+        }
+        int width = origin.getWidth();
+        int height = origin.getHeight();
+        Matrix matrix = new Matrix();
+        matrix.preScale(ratio, ratio);
+        Bitmap newBM = Bitmap.createBitmap(origin, 0, 0, width, height, matrix, false);
+        if (newBM.equals(origin)) {
+            return newBM;
+        }
+        origin.recycle();
+        return newBM;
     }
 
     public void printPng() {

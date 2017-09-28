@@ -18,6 +18,7 @@ import android.telephony.cdma.CdmaCellLocation;
 import android.telephony.gsm.GsmCellLocation;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -641,6 +642,8 @@ public class MisScreen extends BaseActivity {
 
             // MPOS端应答指令执行结果或响应数据
             DataResponse dataRsp = (DataResponse) msg.obj;
+
+            Log.d("DataResponse",dataRsp.toString());
             if (dataRsp == null) {
                 WidgetUtils.showResult(cxt, getString(R.string.tips),
                         getString(R.string.cmd_read_error));
@@ -667,7 +670,6 @@ public class MisScreen extends BaseActivity {
 
             // 指令执行结果
             int ret = dataRsp.getRspResult();
-
             if (ret == Instruction.Code.INS_SUCCESS) {
                 MIS mis = MIS.getInstance(msg.what);
                 switch (mis) {
